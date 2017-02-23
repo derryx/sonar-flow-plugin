@@ -85,7 +85,7 @@ public class FlowLexer {
 
 	    @Override
 	    public boolean hasToBeSkippedFromAst(AstNode node) {
-	      return true;
+	      return false;
 	    }
 
 	  }

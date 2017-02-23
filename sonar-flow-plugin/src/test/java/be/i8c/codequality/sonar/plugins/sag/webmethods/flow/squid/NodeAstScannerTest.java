@@ -20,16 +20,18 @@
 package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid;
 
 import java.io.File;
+import java.util.Set;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.squidbridge.api.CheckMessage;
+import org.sonar.squidbridge.api.SourceFile;
 
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.InterfaceCommentsCheck;
-import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.SavePipelineCheck;
-import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.TryCatchCheck;
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.PipelineDebugCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid.NodeAstScanner;
-import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.visitors.SimpleMetricVisitor;
 
 public class NodeAstScannerTest {
 
@@ -44,7 +46,18 @@ public class NodeAstScannerTest {
 	}
 	
 	@Test
-	  public void savePipelineCheck() {
-		NodeAstScanner.scanSingleFile(nodeFile);
+	  public void pipelineDebugCheck() {
+		SourceFile result = NodeAstScanner.scanSingleFile(nodeFile, new PipelineDebugCheck());
+		
+		Set<CheckMessage> messages = result.getCheckMessages();
+		assertTrue(messages.stream().anyMatch(cm -> cm.getCheck() instanceof PipelineDebugCheck));
+	}
+	
+	@Test
+	  public void interfaceCommentsCheck() {		
+		SourceFile result = NodeAstScanner.scanSingleFile( nodeFile, new InterfaceCommentsCheck());
+		
+		Set<CheckMessage> messages = result.getCheckMessages();
+		assertTrue(messages.stream().anyMatch(cm -> cm.getCheck() instanceof InterfaceCommentsCheck));
 	}
 }

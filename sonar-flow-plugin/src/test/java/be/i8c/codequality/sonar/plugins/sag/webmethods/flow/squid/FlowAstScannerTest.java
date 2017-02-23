@@ -105,14 +105,6 @@ public class FlowAstScannerTest {
 	}
 	
 	@Test
-	  public void interfaceCommentsCheck() {
-		String invalidPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkInterfaceCommentsInvalid/flow.xml";
-		
-		FlowAstScanner.scanSingleFile( new File(invalidPath) , new InterfaceCommentsCheck());
-		// Todo functional validation
-	}
-	
-	@Test
 	  public void qualifiedNameCheck() {
 		String invalidPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkQualityNameInvalid/flow.xml";
 		

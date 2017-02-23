@@ -60,7 +60,8 @@ public class CheckList {
 
 	private static List<Class> getNodeChecks() {
 		return ImmutableList.<Class> of(
-				InterfaceCommentsCheck.class);
+				InterfaceCommentsCheck.class,
+				PipelineDebugCheck.class);
 	}
 
 	private static List<Class> getTopLevelChecks() {
