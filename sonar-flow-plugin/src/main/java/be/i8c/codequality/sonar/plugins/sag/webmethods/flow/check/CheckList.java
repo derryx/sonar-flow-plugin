@@ -66,7 +66,8 @@ public class CheckList {
 
 	private static List<Class> getTopLevelChecks() {
 		return ImmutableList.<Class> of(
-				TryCatchCheck.class
+				TryCatchCheck.class,
+				TryCatchGetLastErrorCheck.class
 				);
 	}
 
