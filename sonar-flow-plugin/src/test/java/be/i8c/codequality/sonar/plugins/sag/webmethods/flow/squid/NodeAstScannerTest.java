@@ -46,13 +46,21 @@ public class NodeAstScannerTest {
 	}
 	
 	@Test
-	  public void pipelineDebugCheck() {
+	public void pipelineDebugCheckEnabled() {
 		SourceFile result = NodeAstScanner.scanSingleFile(nodeFile, new PipelineDebugCheck());
 		
 		Set<CheckMessage> messages = result.getCheckMessages();
 		assertTrue(messages.stream().anyMatch(cm -> cm.getCheck() instanceof PipelineDebugCheck));
 	}
-	
+
+	@Test
+	public void pipelineDebugCheckDisabled() {
+		SourceFile result = NodeAstScanner.scanSingleFile(new File("src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkQualityNameInvalid/node.ndf"), new PipelineDebugCheck());
+		
+		Set<CheckMessage> messages = result.getCheckMessages();
+		assertTrue(messages.stream().noneMatch(cm -> cm.getCheck() instanceof PipelineDebugCheck));
+	}
+
 	@Test
 	  public void interfaceCommentsCheck() {		
 		SourceFile result = NodeAstScanner.scanSingleFile( nodeFile, new InterfaceCommentsCheck());

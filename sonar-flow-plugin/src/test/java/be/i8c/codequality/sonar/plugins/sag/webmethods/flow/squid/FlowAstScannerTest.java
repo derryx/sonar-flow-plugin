@@ -19,8 +19,7 @@
  */
 package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,6 +79,28 @@ public class FlowAstScannerTest {
 		assertTrue("Returned check message not as expected", expectedMessage.equals(violationMessages.get(0).getDefaultMessage()));
 
 	}
+	
+	@Test
+	  public void tryCatchGetLastErrorCheck() {
+		
+		//check valid flow
+		String validFlowPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkTryCatchValid/flow.xml";
+	
+		SourceFile sfCorrect = FlowAstScanner.scanSingleFile( new File(validFlowPath) , new TryCatchGetLastErrorCheck());
+		Set<CheckMessage> scmCorrect = sfCorrect.getCheckMessages();
+		assertTrue(scmCorrect.stream().noneMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
+		
+		
+		// check invalid flow
+		String invalidFlowPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkTryCatchInvalid/flow.xml";
+		String expectedMessage = "Create try-catch sequence";
+		
+		SourceFile sfViolation = FlowAstScanner.scanSingleFile( new File(invalidFlowPath) , new TryCatchGetLastErrorCheck());
+		List<CheckMessage> violationMessages = new ArrayList<CheckMessage>(sfViolation.getCheckMessages());
+		assertTrue(scmCorrect.stream().noneMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
+
+	}
+	
 	
 	@Test
 	  public void savePipelineCheck() {

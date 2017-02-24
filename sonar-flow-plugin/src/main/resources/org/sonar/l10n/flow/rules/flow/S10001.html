@@ -1,0 +1,16 @@
+<p>
+  The property "Pipeline Debug" should be set to "None" in production code. 
+</p>  
+<p>  
+   If the property "Pipeline Debug" is set to "Save", "Restore (Override)" or "Restore (Merge)" this can lead to either performance problems or unexpected behaviour of a flow service.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+  The property "Pipeline Debug" is set to something else than "None".
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+  Set the property "Pipeline Debug" to "None".
+</pre>

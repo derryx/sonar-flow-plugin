@@ -1,0 +1,16 @@
+<p>
+  The first step in a "catch"-sequence should be an invoke of pub.flow:getLastError.
+</p>  
+<p>  
+  If the first step in the "catch"-sequence is not pub.flow:getLastError you might not get the correct error message that triggered your catch.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+  Invoke a service other than pub.flow:getLastError as first step in your "catch"-sequence.
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+  Add pub.flow:getLastError as first step in your "catch"-sequence.
+</pre>
