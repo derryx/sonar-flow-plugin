@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.i8c.sonar.plugins.sag.webmethods</groupId>
 	<artifactId>sonar-flow-plugin-sslr-toolkit</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>Flow :: Plugin :: SSLR :: toolkit</name>
 	<properties>
 		<sonar.version>5.4</sonar.version>
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>be.i8c.codequality.sonar.plugins.sag.webmethods.flow</groupId>
 			<artifactId>sonar-flow-plugin</artifactId>
-			<version>0.1</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

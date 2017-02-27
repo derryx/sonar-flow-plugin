@@ -1,0 +1,16 @@
+<p>
+  The should be no invocations of pub.flow:clearPipeline
+</p>  
+<p>  
+  The should be no invocations of pub.flow:clearPipeline because clearing the pipeline globally can have unwanted side-effects.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+  Invoke pub.flow:clearPipeline
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+  Remove invocation of pub.flow:clearPipeline and replace it with a DROP map-step.
+</pre>

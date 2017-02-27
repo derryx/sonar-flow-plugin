@@ -48,6 +48,7 @@ public class FlowAstScannerTest {
 		for (Class class1 : sd) {
 			logger.debug(sd.toString());
 			sd.toString();
+			System.out.println(sd.toString());
 		}
 	}
 	
@@ -82,23 +83,30 @@ public class FlowAstScannerTest {
 	
 	@Test
 	  public void tryCatchGetLastErrorCheck() {
-		
-		//check valid flow
-		String validFlowPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkTryCatchValid/flow.xml";
-	
-		SourceFile sfCorrect = FlowAstScanner.scanSingleFile( new File(validFlowPath) , new TryCatchGetLastErrorCheck());
-		Set<CheckMessage> scmCorrect = sfCorrect.getCheckMessages();
-		assertTrue(scmCorrect.stream().noneMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
-		
+//		
+//		//check valid flow
+//		String validFlowPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkTryCatchValid/flow.xml";
+//	
+//		SourceFile sfCorrect = FlowAstScanner.scanSingleFile( new File(validFlowPath) , new TryCatchGetLastErrorCheck());
+//		Set<CheckMessage> scmCorrect = sfCorrect.getCheckMessages();
+//		assertTrue(scmCorrect.stream().noneMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
+//		
+//		
+//		// check invalid flow
+//		String invalidFlowPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkTryCatchInvalid/flow.xml";
+//		String expectedMessage = "Create try-catch sequence";
+//		
+//		SourceFile sfViolation = FlowAstScanner.scanSingleFile( new File(invalidFlowPath) , new TryCatchGetLastErrorCheck());
+//		List<CheckMessage> violationMessages = new ArrayList<CheckMessage>(sfViolation.getCheckMessages());
+//		assertTrue(violationMessages.stream().anyMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
 		
 		// check invalid flow
-		String invalidFlowPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkTryCatchInvalid/flow.xml";
-		String expectedMessage = "Create try-catch sequence";
+		String invalidFlowPath2 = "D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/com_dbnetz_Infrastruktur_Fahrplan_PSS_CnR_V01/ns/com_dbnetz_Infrastruktur_Fahrplan_PSS_CnR_V01/pub/alive/flow.xml";
+		//String expectedMessage = "Create try-catch sequence";
 		
-		SourceFile sfViolation = FlowAstScanner.scanSingleFile( new File(invalidFlowPath) , new TryCatchGetLastErrorCheck());
-		List<CheckMessage> violationMessages = new ArrayList<CheckMessage>(sfViolation.getCheckMessages());
-		assertTrue(scmCorrect.stream().noneMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
-
+		SourceFile sfViolation2 = FlowAstScanner.scanSingleFile( new File(invalidFlowPath2) , new TryCatchGetLastErrorCheck());
+		List<CheckMessage> violationMessages2 = new ArrayList<CheckMessage>(sfViolation2.getCheckMessages());
+		assertTrue(violationMessages2.stream().anyMatch(scm -> scm.getCheck() instanceof TryCatchGetLastErrorCheck));
 	}
 	
 	

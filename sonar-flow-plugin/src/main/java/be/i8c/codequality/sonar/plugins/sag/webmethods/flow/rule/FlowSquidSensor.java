@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,9 +92,14 @@ public class FlowSquidSensor implements Sensor {
 		    this.checks = checkFactory
 		      .<SquidCheck<Grammar>>create(CheckList.REPOSITORY_KEY)
 		      .addAnnotatedChecks((Iterable)CheckList.getChecks(settings.getBoolean(FlowPlugin.IGNORE_TOPLEVEL_KEY),false));
+		    
+		    logger.debug("** Defined checks: "+checks.all().stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
+		    
 		    this.nodeChecks = checkFactory
 				      .<SquidCheck<Grammar>>create(CheckList.REPOSITORY_KEY)
 				      .addAnnotatedChecks((Iterable)CheckList.getChecks(settings.getBoolean(FlowPlugin.IGNORE_TOPLEVEL_KEY), true));
+		    logger.debug("** Defined node-checks: "+nodeChecks.all().stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
+		    
 		    this.fileLinesContextFactory = fileLinesContextFactory;
 		    this.fileSystem = fileSystem;
 		    this.resourcePerspectives = resourcePerspectives;
@@ -114,7 +120,7 @@ public class FlowSquidSensor implements Sensor {
 	    
 		List<SquidAstVisitor<Grammar>> visitors = Lists.newArrayList(checks.all());	
 	    visitors.add(new FlowLinesOfCodeVisitor<Grammar>(FlowMetric.LINES_OF_CODE));
-	    logger.debug("** * Visiters: " + visitors.toString());
+	    logger.debug("** * Visitors: " + visitors.toString());
 	    
 	    this.scanner = FlowAstScanner.create(createConfiguration(), visitors.toArray(new SquidAstVisitor[visitors.size()]));
 	    FilePredicates p = fileSystem.predicates();
@@ -132,6 +138,8 @@ public class FlowSquidSensor implements Sensor {
 	private void getInterfaceFiles(Collection<SourceCode> squidSourceFiles) {
 		// Scan node.ndf files
 		List<SquidAstVisitor<Grammar>> visitors = Lists.newArrayList(nodeChecks.all());
+		logger.debug("** * NodeVisitors: " + visitors.toString());
+		
 		AstScanner<Grammar> scanner = NodeAstScanner.create(createConfiguration(), visitors.toArray(new SquidAstVisitor[visitors.size()]));
 		FilePredicates p = fileSystem.predicates();
 		scanner.scanFiles(Lists.newArrayList(fileSystem.files(p.and(p.hasType(InputFile.Type.MAIN), p.hasLanguage(FlowLanguage.KEY), p.matchesPathPattern("**/node.ndf")))));
@@ -139,13 +147,14 @@ public class FlowSquidSensor implements Sensor {
 	    logger.debug("*NODE* nodes found:" + nodeFiles.size() + " *");
 	    for(SourceCode squidSourceFile : squidSourceFiles){
 	    	for(SourceCode nodeFile : nodeFiles){
+	    		logger.debug("** Check for same path "+nodeFile.getKey()+":"+squidSourceFile.getKey());
 	    		if((new File(nodeFile.getKey())).getParent().equals((new File(squidSourceFile.getKey())).getParent())){
+	    			logger.debug("** Adding node.ndf to parent");
 	    			squidSourceFile.addChild(nodeFile);
 	    			String relativePath = pathResolver.relativePath(fileSystem.baseDir(), new java.io.File(nodeFile.getKey()));
 	    			InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().hasRelativePath(relativePath));
 	    			saveViolations(inputFile, (SourceFile) nodeFile);
 	    		}
-	    		
 	    	}
 	    }
 	}

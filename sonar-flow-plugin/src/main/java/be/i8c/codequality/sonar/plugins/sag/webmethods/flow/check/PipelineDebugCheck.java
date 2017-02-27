@@ -17,7 +17,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.NodeCheck
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowTypes;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.NodeGrammar;
 
-@Rule(key = "S10001", name = "Property \"Pipeline debug\" should be set to \"None\"", priority = Priority.MAJOR, tags = {
+@Rule(key = "S00010", name = "Property \"Pipeline debug\" should be set to \"None\"", priority = Priority.MAJOR, tags = {
 		Tags.DEBUG_CODE, Tags.BAD_PRACTICE })
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)

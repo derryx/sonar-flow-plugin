@@ -20,11 +20,17 @@
 package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
 public class CheckList {
+	final static Logger logger = LoggerFactory.getLogger(CheckList.class);
+	
 	public static final String REPOSITORY_KEY = "flow";
 
 	public static final String I8C_PROFILE = "i8c Quality Profile";
@@ -34,9 +40,13 @@ public class CheckList {
 
 	public static List<Class> getChecks() {
 		Builder<Class> builder = new ImmutableList.Builder<Class>();
-		//builder.addAll(getNodeChecks());
+		builder.addAll(getNodeChecks());
 		builder.addAll(getTopLevelChecks());
 		builder.addAll(getOtherChecks());
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("getChecks(): classes="+toString(builder.build()));
+		}
 		
 		return builder.build();
 	}
@@ -55,6 +65,11 @@ public class CheckList {
 				builder.addAll(getTopLevelChecks());
 			builder.addAll(getOtherChecks());
 		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("getChecks(boolean ignoreTopLevel, boolean getNodeRules): ignoreTopLevel="+ignoreTopLevel+", getNodeRules="+getNodeRules+" classes="+toString(builder.build()));
+		}
+		
 		return builder.build();
 	}
 
@@ -79,6 +94,11 @@ public class CheckList {
 				ExitCheck.class,
 				EmptyMapCheck.class,
 				BranchPropertiesCheck.class,
-				EmptyFlowCheck.class);
+				EmptyFlowCheck.class,
+				ClearPipelineCheck.class);
+	}
+	
+	private static String toString(List<Class> classes) {
+		return classes.stream().map(c -> c.toString()).collect(Collectors.joining(", "));
 	}
 }
