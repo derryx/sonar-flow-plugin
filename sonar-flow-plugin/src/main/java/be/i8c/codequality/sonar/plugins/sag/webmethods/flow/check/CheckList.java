@@ -95,7 +95,9 @@ public class CheckList {
 				EmptyMapCheck.class,
 				BranchPropertiesCheck.class,
 				EmptyFlowCheck.class,
-				ClearPipelineCheck.class);
+				ClearPipelineCheck.class,
+				BranchDepthCheck.class,
+				DepthCheck.class);
 	}
 	
 	private static String toString(List<Class> classes) {

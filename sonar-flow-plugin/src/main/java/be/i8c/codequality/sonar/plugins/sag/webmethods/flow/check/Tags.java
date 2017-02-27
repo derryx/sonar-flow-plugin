@@ -24,6 +24,7 @@ public class Tags {
   public static final String ERROR_HANDLING = "error-handling";
   public static final String DEBUG_CODE = "debug-code";
   public static final String BAD_PRACTICE = "bad-practice";
+  public static final String BRAIN_OVERLOAD = "brain-overload";
   
   private Tags() {
     // This class only defines constants

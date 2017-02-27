@@ -1,0 +1,23 @@
+<p>
+  There are too many nested BRANCH levels.
+</p>  
+<p>  
+  Nesting too many BRANCH levels leads to hard to maintain and hard to debug code.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+   BRANCH
+       BRANCH
+           BRANCH
+               BRANCH
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+    Factor out parts of your code to other services to reduce the complexity of your flow service:
+    
+    BRANCH
+        BRANCH
+            INVOKE
+</pre>

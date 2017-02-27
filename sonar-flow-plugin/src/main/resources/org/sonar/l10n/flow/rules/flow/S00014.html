@@ -1,0 +1,25 @@
+<p>
+  There are too many nested step levels.
+</p>  
+<p>  
+  Nesting too many step levels leads to hard to maintain and hard to debug code.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+   BRANCH
+       SEQUENCE
+           LOOP
+               BRANCH
+                   SEQUENCE
+                        SEQUENCE
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+    Factor out parts of your code to other services to reduce the complexity of your flow service:
+    
+    BRANCH
+        SEQUENCE
+             INVOKE
+</pre>

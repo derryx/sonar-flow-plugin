@@ -38,9 +38,9 @@ public class PipelineDebugCheck extends NodeCheck {
 				logger.debug("++ Pipeline option found ++");
 				List<AstNode> pipOptions=astNode.getChildren(FlowTypes.ELEMENT_VALUE);
 				for (AstNode pip : pipOptions) {
-					// 0=None,1=Save,2=Restore(Override),3=Restore(Merge)
+					// 1=None,2=Save,3=Restore(Override),4=Restore(Merge)
 					// so everything else than 0 has a bad taste
-					if(pip.getTokenValue()!=null && !pip.getTokenValue().contains("0")) {
+					if(pip.getTokenValue()!=null && !pip.getTokenValue().contains("1")) {
 						logger.debug("++ Pipeline option VIOLATION found ++");
 						getContext().createLineViolation(this, "Set property \"Pipeline debug\" to \"None\"", astNode);
 					}					
