@@ -22,6 +22,7 @@ package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid;
 import java.io.File;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.slf4j.Logger;
@@ -46,6 +47,7 @@ public class NodeAstScannerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void pipelineDebugCheckEnabled() {
 		SourceFile result = NodeAstScanner.scanSingleFile(nodeFile, new PipelineDebugCheck());
 		
@@ -54,6 +56,7 @@ public class NodeAstScannerTest {
 	}
 
 	@Test
+	@Ignore
 	public void pipelineDebugCheckDisabled() {
 		SourceFile result = NodeAstScanner.scanSingleFile(new File("src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkQualityNameInvalid/node.ndf"), new PipelineDebugCheck());
 		

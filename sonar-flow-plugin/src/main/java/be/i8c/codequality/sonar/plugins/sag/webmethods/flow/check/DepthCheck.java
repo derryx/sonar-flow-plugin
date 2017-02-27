@@ -1,5 +1,6 @@
 package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -56,7 +57,7 @@ public class DepthCheck extends SquidCheck<Grammar> {
 	}
 
 	private int calcNestLevel(AstNode astNode) {
-		List<AstNode> children=getContent(astNode).getChildren();
+		List<AstNode> children=getContent(astNode)==null?new ArrayList<AstNode>():getContent(astNode).getChildren();
 		int result=0;
 		for (AstNode child : children) {
 			int newResult=0;

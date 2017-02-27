@@ -1,5 +1,6 @@
 package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
 priority = Priority.MINOR, tags = {Tags.BAD_PRACTICE,Tags.BRAIN_OVERLOAD})
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_CHANGEABILITY)
-@SqaleConstantRemediation("20min")
+@SqaleConstantRemediation("60min")
 public class BranchDepthCheck extends SquidCheck<Grammar> {	
 	final static Logger logger = LoggerFactory.getLogger(BranchDepthCheck.class);
 	
@@ -56,7 +57,7 @@ public class BranchDepthCheck extends SquidCheck<Grammar> {
 	}
 
 	private int calcBranchLevel(AstNode astNode) {
-		List<AstNode> children=getContent(astNode).getChildren();
+		List<AstNode> children=getContent(astNode)==null?new ArrayList<AstNode>():getContent(astNode).getChildren();
 		int result=0;
 		for (AstNode child : children) {
 			int newResult=0;
