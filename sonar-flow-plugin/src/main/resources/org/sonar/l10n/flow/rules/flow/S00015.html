@@ -1,0 +1,22 @@
+<p>
+  There are too many nested LOOP levels.
+</p>  
+<p>  
+  Nesting too many LOOP levels leads to hard to maintain and hard to debug code.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+   LOOP
+      LOOP
+         LOOP
+</pre>
+
+<h2>Compliant Solution</h2>
+<p>
+ Factor out parts of your code to other services to reduce the complexity of your flow service:
+</p>
+<pre>
+    LOOP
+       INVOKE
+</pre>

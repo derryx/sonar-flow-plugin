@@ -19,6 +19,8 @@
  */
 package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.server.rule.RulesDefinition;
@@ -54,9 +56,12 @@ public class InterfaceCommentsCheck extends NodeCheck{
 		for(AstNode attr:astNode.getChildren(NodeGrammar.ATTRIBUTES)){
 			if(attr.getTokenValue().equals("NODE_COMMENT")){
 				logger.debug("++ Comment found ++");
-				if(astNode.getChildren(FlowTypes.ELEMENT_VALUE).size()<=0){
-					logger.debug("++ Comment VIOLATION found ++");
-					getContext().createLineViolation(this, "Add comment", astNode);
+				List<AstNode> commentNodes=astNode.getChildren(FlowTypes.ELEMENT_VALUE);
+				for (AstNode comment : commentNodes) {
+					if(comment==null || comment.getTokenValue()==null || comment.getTokenValue().trim().length()==0){
+						logger.debug("++ Comment VIOLATION found ++");
+						getContext().createLineViolation(this, "Add comment", astNode);
+					}
 				}
 			}
 		}
