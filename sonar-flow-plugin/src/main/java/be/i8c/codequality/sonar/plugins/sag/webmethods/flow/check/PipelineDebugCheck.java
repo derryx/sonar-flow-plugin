@@ -40,7 +40,7 @@ public class PipelineDebugCheck extends NodeCheck {
 				for (AstNode pip : pipOptions) {
 					// 1=None,2=Save,3=Restore(Override),4=Restore(Merge)
 					// so everything else than 0 has a bad taste
-					if(pip.getTokenValue()!=null && !pip.getTokenValue().contains("1")) {
+					if(pip.getTokenValue()!=null && !pip.getTokenValue().trim().equals("1")) {
 						logger.debug("++ Pipeline option VIOLATION found ++");
 						getContext().createLineViolation(this, "Set property \"Pipeline debug\" to \"None\"", astNode);
 					}					

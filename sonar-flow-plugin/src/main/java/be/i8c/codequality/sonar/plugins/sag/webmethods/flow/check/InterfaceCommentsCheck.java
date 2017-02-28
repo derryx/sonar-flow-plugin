@@ -40,7 +40,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.NodeGrammar;
 		Tags.BAD_PRACTICE })
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)
-@SqaleConstantRemediation("2min")
+@SqaleConstantRemediation("5min")
 public class InterfaceCommentsCheck extends NodeCheck{
 
 	final static Logger logger = LoggerFactory.getLogger(InterfaceCommentsCheck.class);
@@ -57,10 +57,16 @@ public class InterfaceCommentsCheck extends NodeCheck{
 			if(attr.getTokenValue().equals("NODE_COMMENT")){
 				logger.debug("++ Comment found ++");
 				List<AstNode> commentNodes=astNode.getChildren(FlowTypes.ELEMENT_VALUE);
-				for (AstNode comment : commentNodes) {
-					if(comment==null || comment.getTokenValue()==null || comment.getTokenValue().trim().length()==0){
-						logger.debug("++ Comment VIOLATION found ++");
-						getContext().createLineViolation(this, "Add comment", astNode);
+				if (commentNodes.isEmpty()) {
+					logger.debug("++ Comment VIOLATION found ++");
+					getContext().createLineViolation(this, "Add comment", astNode);
+				} else {
+					// check content length > 0
+					for (AstNode comment : commentNodes) {
+						if(comment==null || comment.getTokenValue()==null || comment.getTokenValue().trim().length()==0){
+							logger.debug("++ Comment VIOLATION found ++");
+							getContext().createLineViolation(this, "Add comment", astNode);
+						}
 					}
 				}
 			}
