@@ -63,6 +63,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.FlowLanguage;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.FlowPlugin;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.CheckList;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.NodeCheck;
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.NonTopLevelCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.TopLevelCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.metric.FlowMetric;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid.FlowAstScanner;
@@ -225,7 +226,9 @@ public class FlowSquidSensor implements Sensor {
 				logger.debug("+++File: " + squidFile.getKey() + " - Checking message ToplevelService: " + squidFile.getInt(FlowMetric.IS_TOP_LEVEL) + " TopLevelCheck: " +  String.valueOf(c instanceof TopLevelCheck));
 				if(squidFile.getInt(FlowMetric.IS_TOP_LEVEL)!=1 && c instanceof TopLevelCheck){
 					logger.debug("+++Ignoring toplevelCheck: " + c.getKey() + " for file: " + squidFile.getKey());
-				}else{
+				}else if(squidFile.getInt(FlowMetric.IS_TOP_LEVEL)==1 && c instanceof NonTopLevelCheck) {
+					logger.debug("+++Ignoring nonToplevelCheck: " + c.getKey() + " for file: " + squidFile.getKey());
+				} else {
 					logger.debug("+++ Message " + message.getDefaultMessage());
 					logger.debug("+++ Message " + message.toString());
 					RuleKey ruleKey;

@@ -17,18 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check;
+package be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type;
 
-public class Tags {
+import org.sonar.squidbridge.checks.SquidCheck;
 
-  public static final String ERROR_HANDLING = "error-handling";
-  public static final String DEBUG_CODE = "debug-code";
-  public static final String BAD_PRACTICE = "bad-practice";
-  public static final String BRAIN_OVERLOAD = "brain-overload";
-  public static final String PERFORMANCE = "performance";
-  
-  private Tags() {
-    // This class only defines constants
-  }
+import com.sonar.sslr.api.Grammar;
+
+public abstract class NonTopLevelCheck extends SquidCheck<Grammar>{
 
 }

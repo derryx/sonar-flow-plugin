@@ -27,20 +27,19 @@ import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.NonTopLevelCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowAttTypes;
 
-@Rule(key = "S00012", name = "No invokes of pub.flow:clearPipeline should be in code", priority = Priority.MAJOR, tags = {
+@Rule(key = "S00012", name = "No invokes of pub.flow:clearPipeline should be in code for non-toplevel services", priority = Priority.MAJOR, tags = {
 		Tags.BAD_PRACTICE })
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)
 @SqaleConstantRemediation("2min")
-public class ClearPipelineCheck extends SquidCheck<Grammar>{
+public class ClearPipelineCheck extends NonTopLevelCheck {
 
 	final static Logger logger = LoggerFactory.getLogger(ClearPipelineCheck.class);
 	
@@ -54,9 +53,9 @@ public class ClearPipelineCheck extends SquidCheck<Grammar>{
 	public void visitNode(AstNode astNode) {
 		String service = astNode.getFirstChild(FlowGrammar.ATTRIBUTES).getFirstChild(FlowAttTypes.SERVICE).getToken().getOriginalValue();
 		logger.debug("Invoke of service found: " + service);
+		// invocation is only really bad in non-toplevel services
 		if("pub.flow:clearPipeline".equalsIgnoreCase(service)){
 			getContext().createLineViolation(this, "Remove invocation of pub.flow:clearPipeline", astNode);
 		}
 	}
-
 }

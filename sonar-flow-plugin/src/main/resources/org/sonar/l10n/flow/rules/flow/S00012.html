@@ -1,5 +1,5 @@
 <p>
-  The should be no invocations of pub.flow:clearPipeline
+  The should be no invocations of pub.flow:clearPipeline in non-toplevel services
 </p>  
 <p>  
   The should be no invocations of pub.flow:clearPipeline because clearing the pipeline globally can have unwanted side-effects.
@@ -12,5 +12,5 @@
 
 <h2>Compliant Solution</h2>
 <pre>
-  Remove invocation of pub.flow:clearPipeline and replace it with a DROP map-step.
+  Remove invocation of pub.flow:clearPipeline and replace it with a MAP step to drop unwanted pipeline contents.
 </pre>

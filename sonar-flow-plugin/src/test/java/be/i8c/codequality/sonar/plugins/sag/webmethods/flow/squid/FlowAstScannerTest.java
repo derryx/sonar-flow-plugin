@@ -134,6 +134,17 @@ public class FlowAstScannerTest {
 	}
 	
 	@Test
+	public void clearPipelineCheck() {
+		// check invalid flow
+		String invalidFlowPath2 = "D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/saveRestorePipeline/flow.xml";
+		//String expectedMessage = "Create try-catch sequence";
+		
+		SourceFile sfViolation2 = FlowAstScanner.scanSingleFile( new File(invalidFlowPath2) , new ClearPipelineCheck());
+		List<CheckMessage> violationMessages2 = new ArrayList<CheckMessage>(sfViolation2.getCheckMessages());
+		assertTrue(violationMessages2.stream().anyMatch(scm -> scm.getCheck() instanceof ClearPipelineCheck));
+	}
+	
+	@Test
 	  public void disabledCheck() {
 		String invalidPath = "src/test/resources/WmPackage/ns/I8cFlowSonarPluginTest/pub/checkDisabledInvalid/flow.xml";
 		String expectedMessage = "Remove disabled code";

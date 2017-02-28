@@ -20,7 +20,7 @@ import com.sonar.sslr.api.Grammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
 
 @Rule(key="S00015",name = "Checks how many nested LOOPs a flow service has", 
-priority = Priority.MINOR, tags = {Tags.BAD_PRACTICE,Tags.BRAIN_OVERLOAD})
+priority = Priority.MINOR, tags = {Tags.BAD_PRACTICE,Tags.BRAIN_OVERLOAD,Tags.PERFORMANCE})
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_CHANGEABILITY)
 @SqaleConstantRemediation("60min")
