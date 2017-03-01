@@ -120,6 +120,17 @@ public class FlowAstScannerTest {
 		assertTrue(violationMessages2.stream().anyMatch(scm -> scm.getCheck() instanceof BranchDepthCheck));
 	}
 	
+	@Test
+	public void repeatTest() {
+		// check invalid flow
+		String invalidFlowPath2 = "D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/saveRestorePipeline/flow.xml";
+		//String expectedMessage = "Create try-catch sequence";
+		
+		SourceFile sfViolation2 = FlowAstScanner.scanSingleFile( new File(invalidFlowPath2) , new RepeatCheck());
+		List<CheckMessage> violationMessages2 = new ArrayList<CheckMessage>(sfViolation2.getCheckMessages());
+		assertTrue(violationMessages2.stream().anyMatch(scm -> scm.getCheck() instanceof RepeatCheck));
+	}
+	
 	
 	@Test
 	  public void savePipelineCheck() {

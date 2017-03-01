@@ -55,7 +55,7 @@ public class ClearPipelineCheck extends NonTopLevelCheck {
 		logger.debug("Invoke of service found: " + service);
 		// invocation is only really bad in non-toplevel services
 		if("pub.flow:clearPipeline".equalsIgnoreCase(service)){
-			getContext().createLineViolation(this, "Remove invocation of pub.flow:clearPipeline", astNode);
+			getContext().createLineViolation(this, "Remove invocation of pub.flow:clearPipeline in non-toplevel services", astNode);
 		}
 	}
 }

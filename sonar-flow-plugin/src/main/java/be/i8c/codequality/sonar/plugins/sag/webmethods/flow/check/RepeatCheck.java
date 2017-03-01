@@ -27,44 +27,54 @@ import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
+import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 
-import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.NodeCheck;
-import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowTypes;
-import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.NodeGrammar;
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowAttTypes;
 
-@Rule(key = "S00004", name = "Interfaces of services should contain comments", priority = Priority.MINOR, tags = {
-		Tags.BAD_PRACTICE })
+@Rule(key="S00006",name = "In the REPEAT step, the \"Count\" property must be defined", 
+priority = Priority.MAJOR, tags = {Tags.BUG})
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)
-@SqaleConstantRemediation("5min")
-public class InterfaceCommentsCheck extends NodeCheck{
+@SqaleConstantRemediation("2min")
+public class RepeatCheck extends SquidCheck<Grammar>{
 
-	final static Logger logger = LoggerFactory.getLogger(InterfaceCommentsCheck.class);
+	final static Logger logger = LoggerFactory.getLogger(RepeatCheck.class);
 	
 	@Override
 	public void init() {
-		logger.debug("++ Initializing " + this.getClass().getName() + " ++");
-		
-		// we subscribe to the high level Values so that we only get the first level comments
-		subscribeTo(NodeGrammar.VALUES);
+		logger.debug("++ Initializing {} ++", this.getClass().getName());
+		subscribeTo(FlowGrammar.RETRY);
 	}
-	
+
 	@Override
 	public void visitNode(AstNode astNode) {
-		// iterate over the values of the first level
-		for (AstNode n : astNode.getChildren(NodeGrammar.VALUE)) {
-			for (AstNode attr : n.getChildren(NodeGrammar.ATTRIBUTES)) {
-				if (attr.getTokenValue().equals("NODE_COMMENT")) {
-					logger.debug("++ Comment found ++");
-					if (astNode.getChildren(FlowTypes.ELEMENT_VALUE).size() <= 0) {
-						logger.debug("++ Comment VIOLATION found ++");
-						getContext().createLineViolation(this, "Add comment", astNode);
-					}
-				}
+		AstNode repeatNode = astNode.getFirstChild(FlowGrammar.ATTRIBUTES);
+		if (repeatNode != null){
+			logger.debug("++ Repeat interface element found. ++");
+			String count = getCount(repeatNode);
+			if (count == null || count.trim().equals("")) {
+				logger.debug("++ \"Count\" property found to be empty! ++");
+				getContext().createLineViolation(this, "The \"Count\" "
+				+ "property must be defined for the interface element 'REPEAT'", repeatNode);
 			}
 		}
 	}
 
+	private String getCount(AstNode repeatNode) {
+		if (repeatNode != null) {
+			AstNode countAtt = repeatNode.getFirstChild(FlowAttTypes.COUNT);
+			if (countAtt != null) {
+				String countType = countAtt.getToken().getOriginalValue();
+				logger.debug("++ Count field found! ++");
+				if ( countType != null) {
+					return countType;
+				}
+			}
+		}
+		return null;
+	}
 }

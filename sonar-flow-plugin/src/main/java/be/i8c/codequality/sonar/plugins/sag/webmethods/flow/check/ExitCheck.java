@@ -38,7 +38,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowA
 
 @Rule(key="S00006",name = "In the EXIT step, \"Exit from \" property must be defined and "
 		+ "the \"Failure message\" must be defined if the \"signal\" property is FAILURE", 
-		priority = Priority.MINOR, tags = {Tags.DEBUG_CODE, Tags.BAD_PRACTICE})
+		priority = Priority.MAJOR, tags = {Tags.BUG})
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)
 @SqaleConstantRemediation("2min")

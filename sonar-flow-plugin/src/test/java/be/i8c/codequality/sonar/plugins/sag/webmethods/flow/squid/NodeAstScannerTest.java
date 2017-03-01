@@ -66,9 +66,9 @@ public class NodeAstScannerTest {
 
 	@Test
 	  public void interfaceCommentsCheck() {		
-		SourceFile result = NodeAstScanner.scanSingleFile( nodeFile, new InterfaceCommentsCheck());
+		SourceFile result = NodeAstScanner.scanSingleFile( new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/com_dbnetz_Infrastruktur_Fahrplan_PSS_CnR_V01/ns/clickandride/v01/betriebsstelle/_get/node.ndf"), new InterfaceCommentsCheck());
 		
 		Set<CheckMessage> messages = result.getCheckMessages();
-		assertTrue(messages.stream().anyMatch(cm -> cm.getCheck() instanceof InterfaceCommentsCheck));
+		assertEquals(1,messages.stream().filter(cm -> cm.getCheck() instanceof InterfaceCommentsCheck).count());
 	}
 }

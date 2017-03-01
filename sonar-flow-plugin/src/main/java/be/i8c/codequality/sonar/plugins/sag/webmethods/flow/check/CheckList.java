@@ -98,7 +98,8 @@ public class CheckList {
 				ClearPipelineCheck.class,
 				BranchDepthCheck.class,
 				DepthCheck.class,
-				LoopDepthCheck.class);
+				LoopDepthCheck.class,
+				RepeatCheck.class);
 	}
 	
 	private static String toString(List<Class> classes) {

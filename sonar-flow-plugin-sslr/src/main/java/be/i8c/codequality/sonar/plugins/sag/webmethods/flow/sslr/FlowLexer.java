@@ -92,7 +92,7 @@ public class FlowLexer {
 
 	public static enum FlowAttTypes implements TokenType {	    
 		SERVICE,EXITON("EXIT-ON"),MODE,NAME,DISABLED,FROM,SIGNAL,FAILUREMESSAGE("FAILURE-MESSAGE"),SWITCH,
-		LABELEXPRESSIONS;
+		LABELEXPRESSIONS,COUNT,BACKOFF("BACK-OFF"),LOOPON("LOOP-ON"),TIMEOUT;
 
 		private String attName;
 		  

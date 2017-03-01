@@ -26,6 +26,7 @@ public class Tags {
   public static final String BAD_PRACTICE = "bad-practice";
   public static final String BRAIN_OVERLOAD = "brain-overload";
   public static final String PERFORMANCE = "performance";
+  public static final String BUG = "bug";
   
   private Tags() {
     // This class only defines constants
