@@ -35,8 +35,8 @@ import com.sonar.sslr.api.Grammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowAttTypes;
 
-@Rule(key="S00006",name = "In the REPEAT step, the \"Count\" property must be defined", 
-priority = Priority.MAJOR, tags = {Tags.BUG})
+@Rule(key="S00016",name = "In the REPEAT step, the \"Count\" property must be defined", 
+priority = Priority.MAJOR, tags = {Tags.BUG, Tags.BAD_PRACTICE})
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)
 @SqaleConstantRemediation("2min")
@@ -61,6 +61,12 @@ public class RepeatCheck extends SquidCheck<Grammar>{
 				getContext().createLineViolation(this, "The \"Count\" "
 				+ "property must be defined for the step type 'REPEAT'", repeatNode);
 			}
+			String timeout = getTimeout(repeatNode);
+			if (timeout == null || timeout.trim().equals("")) {
+				logger.debug("++ \"Timeout\" property found to be empty! ++");
+				getContext().createLineViolation(this, "It is bad practice to leave the \"Timeout\" "
+				+ "property empty for the step type 'REPEAT'", repeatNode);
+			}
 		}
 	}
 
@@ -77,4 +83,18 @@ public class RepeatCheck extends SquidCheck<Grammar>{
 		}
 		return null;
 	}
+	
+	private String getTimeout(AstNode repeatNode) {
+		if (repeatNode != null) {
+			AstNode timeoutAtt = repeatNode.getFirstChild(FlowAttTypes.TIMEOUT);
+			if (timeoutAtt != null) {
+				String timeoutType = timeoutAtt.getToken().getOriginalValue();
+				logger.debug("++ Timeout field found! ++");
+				if ( timeoutType != null) {
+					return timeoutType;
+				}
+			}
+		}
+		return null;
+	}	
 }
