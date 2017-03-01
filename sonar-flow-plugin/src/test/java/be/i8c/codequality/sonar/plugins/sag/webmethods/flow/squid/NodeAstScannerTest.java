@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.squidbridge.api.CheckMessage;
 import org.sonar.squidbridge.api.SourceFile;
 
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.DocTypeQualifiedNameCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.InterfaceCommentsCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.PipelineDebugCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid.NodeAstScanner;
@@ -70,5 +71,12 @@ public class NodeAstScannerTest {
 		
 		Set<CheckMessage> messages = result.getCheckMessages();
 		assertEquals(1,messages.stream().filter(cm -> cm.getCheck() instanceof InterfaceCommentsCheck).count());
+	}
+	
+	@Test
+	public void docTypeQualifiedNameCheck() {
+		SourceFile result = NodeAstScanner.scanSingleFile(new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/doc/SuperDuperDocumentType/node.ndf"),new DocTypeQualifiedNameCheck());
+		Set<CheckMessage> messages = result.getCheckMessages();
+		assertEquals(1,messages.stream().filter(cm -> cm.getCheck() instanceof DocTypeQualifiedNameCheck).count());
 	}
 }
