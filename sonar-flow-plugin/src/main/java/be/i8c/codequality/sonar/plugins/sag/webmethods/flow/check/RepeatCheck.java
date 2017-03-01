@@ -36,7 +36,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowAttTypes;
 
 @Rule(key="S00016",name = "In the REPEAT step, the \"Count\" property must be defined", 
-priority = Priority.MAJOR, tags = {Tags.BUG, Tags.BAD_PRACTICE})
+priority = Priority.MAJOR, tags = {Tags.BAD_PRACTICE})
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.LOGIC_RELIABILITY)
 @SqaleConstantRemediation("2min")
@@ -60,6 +60,11 @@ public class RepeatCheck extends SquidCheck<Grammar>{
 				logger.debug("++ \"Count\" property found to be empty! ++");
 				getContext().createLineViolation(this, "The \"Count\" "
 				+ "property must be defined for the step type 'REPEAT'", repeatNode);
+			}
+			if (count == null || count.trim().equals("-1")) {
+				logger.debug("++ \"Count\" property found to be -1! ++");
+				getContext().createLineViolation(this, "The \"Count\" "
+				+ "property should not be set to '-1' for a 'REPEAT' step", repeatNode);
 			}
 			String timeout = getTimeout(repeatNode);
 			if (timeout == null || timeout.trim().equals("")) {

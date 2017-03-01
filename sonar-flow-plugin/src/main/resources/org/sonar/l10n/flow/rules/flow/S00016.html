@@ -4,7 +4,7 @@
 
 <pre>
   Services with interface element 'REPEAT' step need to be configured correctly:
-  	- The "Count" property needs to be configured.
+  	- The "Count" property needs to be configured. You should not set it to -1 (means NO LIMIT). This can lead to infinite loops.
   	- It is bad practice to leave the "Timeout" property empty 
 </pre>
 
@@ -15,6 +15,6 @@ Any non-compliant variant
 
 <h2>Compliant Solution</h2>
 <pre>
-	- Configure the "Count" property.
+	- Configure the "Count" property. You should not set it -1. This can lead to infinite loops!
   	- Configure the "Timeout" property.
 </pre>
