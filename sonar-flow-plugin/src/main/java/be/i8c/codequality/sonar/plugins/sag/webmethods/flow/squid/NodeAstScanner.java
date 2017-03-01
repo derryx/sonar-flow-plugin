@@ -32,6 +32,7 @@ import org.sonar.squidbridge.api.SourceCode;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.api.SourceProject;
 import org.sonar.squidbridge.indexer.QueryByType;
+import org.sonar.squidbridge.metrics.CommentsVisitor;
 
 import com.google.common.base.Charsets;
 import com.sonar.sslr.api.Grammar;
@@ -83,7 +84,7 @@ public class NodeAstScanner {
 		    return builder.build();
 	  }
 	  
-	  private static void setCommentAnalyser(AstScanner.Builder<Grammar> builder) {
+	  private static void setCommentAnalyser(AstScanner.Builder<Grammar> builder) {		
 		    builder.setCommentAnalyser(
 		      new CommentAnalyser() {
 		        @Override

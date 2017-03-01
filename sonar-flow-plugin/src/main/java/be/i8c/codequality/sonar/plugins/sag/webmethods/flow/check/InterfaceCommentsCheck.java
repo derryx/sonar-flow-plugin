@@ -56,7 +56,7 @@ public class InterfaceCommentsCheck extends NodeCheck{
 		// iterate over the values of the first level
 		for (AstNode n : astNode.getChildren(NodeGrammar.VALUE)) {
 			for (AstNode attr : n.getChildren(NodeGrammar.ATTRIBUTES)) {
-				if (attr.getTokenValue().equals("NODE_COMMENT")) {
+				if (attr.getTokenValue().equalsIgnoreCase("NODE_COMMENT")) {
 					logger.debug("++ Comment found ++");
 					if (astNode.getChildren(FlowTypes.ELEMENT_VALUE).size() <= 0) {
 						logger.debug("++ Comment VIOLATION found ++");
