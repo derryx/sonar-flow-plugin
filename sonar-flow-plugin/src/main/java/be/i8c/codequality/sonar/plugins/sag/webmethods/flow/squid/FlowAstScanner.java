@@ -47,6 +47,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.metric.FlowMetric;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowConfiguration;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowGrammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowParser;
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.visitors.CommentLinesVisitor;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.visitors.DependencyVisitor;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.visitors.FlowLinesOfCodeVisitor;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.visitors.SimpleMetricVisitor;
@@ -122,12 +123,12 @@ public class FlowAstScanner {
 		    builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder().withCommentMetric(FlowMetric.COMMENT_LINES)
 		      .withNoSonar(true)
 		      .build());
-		    builder.withSquidAstVisitor(new SimpleMetricVisitor());
 		    builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
 		      .setMetricDef(FlowMetric.MAPS)
 		      .subscribeTo(FlowGrammar.MAP)
 		      .build());
-		  }
+		    builder.withSquidAstVisitor(new CommentLinesVisitor<>(FlowMetric.COMMENT_LINES));
+	  }
 		  
 		  private static void setCommentAnalyser(AstScanner.Builder<Grammar> builder) {
 			    builder.setCommentAnalyser(
