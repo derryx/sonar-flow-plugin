@@ -59,7 +59,7 @@ public class RepeatCheck extends SquidCheck<Grammar>{
 			if (count == null || count.trim().equals("")) {
 				logger.debug("++ \"Count\" property found to be empty! ++");
 				getContext().createLineViolation(this, "The \"Count\" "
-				+ "property must be defined for the interface element 'REPEAT'", repeatNode);
+				+ "property must be defined for the step type 'REPEAT'", repeatNode);
 			}
 		}
 	}
