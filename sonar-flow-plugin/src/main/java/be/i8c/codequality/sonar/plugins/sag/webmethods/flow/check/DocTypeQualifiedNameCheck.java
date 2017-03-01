@@ -47,30 +47,49 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 	final static Logger logger = LoggerFactory.getLogger(DocTypeQualifiedNameCheck.class);
 	
 	private static final String DEFAULT_NC = "[A-Z][a-z0-9]*[A-Z0-9][a-z0-9]+[A-Z.a-z0-9]*:[A-Z]+[a-z0-9]+[A-Za-z0-9]*";
+	private static final String DEFAULT_FIELD_NC = "[A-Z][a-z0-9]+[A-Za-z0-9]*";
 
 	@RuleProperty(
 			key = "flow.doctype.naming",
 			description = "Regular expression defining the naming convention of doctype assets",
 			defaultValue = "" + DEFAULT_NC)
 	private String namingConvention = DEFAULT_NC;
+
+	@RuleProperty(
+			key = "flow.doctype.field.naming",
+			description = "Regular expression defining the naming convention of doctype assets",
+			defaultValue = "" + DEFAULT_FIELD_NC)
+	private String fieldNamingConvention = DEFAULT_FIELD_NC;
+	
 	private Pattern p;
+	private Pattern pField;
 	
 	@Override
 	public void init() {
 		logger.debug("++ Initializing " + this.getClass().getName() + " ++");
 		p = Pattern.compile(namingConvention);
-		subscribeTo(NodeGrammar.VALUES);
+		pField = Pattern.compile(fieldNamingConvention);
+		
+		subscribeTo(NodeGrammar.RECORD);
 	}
 
 	@Override
 	public void visitNode(AstNode astNode) {
-		for (AstNode rec : astNode.getChildren(NodeGrammar.RECORD)) {		
-			if (!"RECORD".equalsIgnoreCase(getNodeType(rec))) {
-				return;
-			}
-			if (!p.matcher(getName(rec)).matches()) {
-				getContext().createLineViolation(this, "DocType name " + getName(rec) + " does not conform to the naming convention", astNode);
-			}			
+		// We are only interested in DocType definitions
+		if (!"RECORD".equalsIgnoreCase(getNodeType(astNode))) {
+			return;
+		}
+		
+		// If we get a name we check it
+		String docName=getName(astNode);
+		if (docName!=null && !p.matcher(docName).matches()) {
+			getContext().createLineViolation(this, "DocType name \"" + docName + "\" does not conform to the naming convention", astNode);
+		}
+		
+		// If we get a field name we check it
+		String fieldName=getFieldName(astNode);
+		if (fieldName!=null && !pField.matcher(fieldName).matches()) {
+			getContext().createLineViolation(this, "DocType field \"" + fieldName + "\" does not conform to the naming convention", astNode);
 		}
 	}
 	
@@ -79,7 +98,9 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 			for (AstNode attr : n.getChildren(NodeGrammar.ATTRIBUTES)) {
 				if (attr.getTokenValue().equalsIgnoreCase(valueName)) {
 					AstNode value=n.getFirstChild(FlowTypes.ELEMENT_VALUE);
-					return value.getTokenValue().trim();
+					if (value!=null) {
+						return value.getTokenValue().trim();
+					}
 				}
 			}
 		}
@@ -93,5 +114,9 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 	
 	private String getName(AstNode n) {
 		return getValue(n,"NODE_NSNAME");
+	}
+	
+	private String getFieldName(AstNode n) {
+		return getValue(n,"FIELD_NAME");
 	}
 }
