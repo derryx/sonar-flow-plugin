@@ -77,7 +77,8 @@ public class CheckList {
 		return ImmutableList.<Class> of(
 				InterfaceCommentsCheck.class,
 				PipelineDebugCheck.class,
-				DocTypeQualifiedNameCheck.class);
+				DocTypeQualifiedNameCheck.class,
+				DocTypeReferenceCheck.class);
 	}
 
 	private static List<Class> getTopLevelChecks() {

@@ -37,7 +37,7 @@ import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.type.NodeCheck
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.NodeGrammar;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.sslr.FlowLexer.FlowTypes;
 
-@Rule(key = "S00017", name = "Flow assets should follow the predefined naming convention", priority = Priority.MAJOR, tags = {
+@Rule(key = "S00017", name = "DocType assets should follow the predefined naming convention", priority = Priority.MAJOR, tags = {
 		Tags.BAD_PRACTICE })
 @ActivatedByDefault
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -48,6 +48,7 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 	
 	private static final String DEFAULT_NC = "[A-Z][a-z0-9]*[A-Z0-9][a-z0-9]+[A-Z.a-z0-9]*:[A-Z]+[a-z0-9]+[A-Za-z0-9]*";
 	private static final String DEFAULT_FIELD_NC = "[A-Z][a-z0-9]+[A-Za-z0-9]*";
+	private static final String DEFAULT_SIG_CHECK = "true";
 
 	@RuleProperty(
 			key = "flow.doctype.naming",
@@ -61,6 +62,13 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 			defaultValue = "" + DEFAULT_FIELD_NC)
 	private String fieldNamingConvention = DEFAULT_FIELD_NC;
 	
+	@RuleProperty(
+			key = "flow.doctype.naming.svcsig",
+			description = "Switch (true/false) to enable or disable checking of service signatures",
+			defaultValue = ""+DEFAULT_SIG_CHECK)
+	private String enableServiceSignatureCheck;
+	private Boolean enableServiceSignatureCheckBool;
+	
 	private Pattern p;
 	private Pattern pField;
 	
@@ -70,11 +78,22 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 		p = Pattern.compile(namingConvention);
 		pField = Pattern.compile(fieldNamingConvention);
 		
+		if (enableServiceSignatureCheck==null) {
+			enableServiceSignatureCheck=DEFAULT_SIG_CHECK;
+		}
+		enableServiceSignatureCheckBool=Boolean.parseBoolean(enableServiceSignatureCheck);
+		
 		subscribeTo(NodeGrammar.RECORD);
 	}
 
 	@Override
 	public void visitNode(AstNode astNode) {
+		// is it a service signature?
+		if (!enableServiceSignatureCheckBool && "SVC_SIG".equalsIgnoreCase(getRecordName(astNode))) {
+			// we ignore service signatures if switch is off
+			return;
+		}
+		
 		// We are only interested in DocType definitions
 		if (!"RECORD".equalsIgnoreCase(getNodeType(astNode))) {
 			return;
@@ -118,5 +137,9 @@ public class DocTypeQualifiedNameCheck extends NodeCheck {
 	
 	private String getFieldName(AstNode n) {
 		return getValue(n,"FIELD_NAME");
+	}
+	
+	private String getRecordName(AstNode n) {
+		return n.getFirstChild(NodeGrammar.ATTRIBUTES).getTokenValue().trim();
 	}
 }

@@ -31,6 +31,7 @@ import org.sonar.squidbridge.api.CheckMessage;
 import org.sonar.squidbridge.api.SourceFile;
 
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.DocTypeQualifiedNameCheck;
+import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.DocTypeReferenceCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.InterfaceCommentsCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.check.PipelineDebugCheck;
 import be.i8c.codequality.sonar.plugins.sag.webmethods.flow.squid.NodeAstScanner;
@@ -75,8 +76,17 @@ public class NodeAstScannerTest {
 	
 	@Test
 	public void docTypeQualifiedNameCheck() {
-		SourceFile result = NodeAstScanner.scanSingleFile(new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/doc/SuperDuperDocumentType/node.ndf"),new DocTypeQualifiedNameCheck());
+		//SourceFile result = NodeAstScanner.scanSingleFile(new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/doc/SuperDuperDocumentType/node.ndf"),new DocTypeQualifiedNameCheck());
+		SourceFile result = NodeAstScanner.scanSingleFile(new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/saveRestorePipeline/node.ndf"),new DocTypeQualifiedNameCheck());
 		Set<CheckMessage> messages = result.getCheckMessages();
 		assertEquals(1,messages.stream().filter(cm -> cm.getCheck() instanceof DocTypeQualifiedNameCheck).count());
 	}
+	
+	@Test
+	public void doctypeReferenceCheck() {
+		//SourceFile result = NodeAstScanner.scanSingleFile(new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/doc/SuperDuperDocumentType/node.ndf"),new DocTypeQualifiedNameCheck());
+		SourceFile result = NodeAstScanner.scanSingleFile(new File("D:/Entwicklung/SoftwareAG98/IntegrationServer/instances/default/packages/ThomasIQSTest/ns/ThomasIQSTest/testServiceWithADocumentInSig/node.ndf"),new DocTypeReferenceCheck());
+		Set<CheckMessage> messages = result.getCheckMessages();
+		assertEquals(1,messages.stream().filter(cm -> cm.getCheck() instanceof DocTypeReferenceCheck).count());
+	}	
 }
