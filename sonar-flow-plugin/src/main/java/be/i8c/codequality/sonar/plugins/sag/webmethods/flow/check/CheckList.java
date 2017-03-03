@@ -78,7 +78,8 @@ public class CheckList {
 				InterfaceCommentsCheck.class,
 				PipelineDebugCheck.class,
 				DocTypeQualifiedNameCheck.class,
-				DocTypeReferenceCheck.class);
+				DocTypeReferenceCheck.class,
+				OnlyLocalPublishableCheck.class);
 	}
 
 	private static List<Class> getTopLevelChecks() {
